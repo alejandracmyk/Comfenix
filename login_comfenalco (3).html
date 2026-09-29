@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portería Comfenix – Inicio de Sesión</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+body {
+    min-height: 100vh;
+    background:
+        linear-gradient(135deg,
+            #0d2e14 0%,
+            #1a4a2e 40%,
+            #245e3a 70%,
+            #2e7d4f 100%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    overflow-y: auto;
+    position: relative;
+}
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.12;
+    background: white;
+    pointer-events: none;
+}
+body::before {
+    width: 520px;
+    height: 520px;
+    top: -140px;
+    left: -140px;
+}
+body::after {
+    width: 400px;
+    height: 400px;
+    bottom: -100px;
+    right: -100px;
+}
+.login-box {
+    background: rgba(255,255,255,0.93);
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 35px 35px;
+    border-radius: 20px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.35);
+    text-align: center;
+    animation: aparecer 0.5s ease;
+    position: relative;
+    z-index: 1;
+}
+@keyframes aparecer {
+    from { opacity:0; transform: translateY(30px); }
+    to   { opacity:1; transform: translateY(0);    }
+}
+.logo-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.logo-header canvas {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+h1 {
+    color: #1a4a2e;
+    font-size: 26px;
+    font-weight: 700;
+    cursor: default;
+    user-select: none;
+}
+.subtitulo {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 28px;
+}
+.campo {
+    position: relative;
+    margin-bottom: 16px;
+    text-align: left;
+}
+.campo label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.campo input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 2px solid #dce3f0;
+    font-size: 15px;
+    transition: border 0.2s;
+    outline: none;
+    background: #f8faff;
+    color: #222;
+}
+.campo input:focus {
+    border-color: #1a4a2e;
+    background: white;
+}
+.btn-login {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #1a4a2e, #2e7d4f);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+}
+.btn-login:hover {
+    opacity: 0.90;
+    transform: translateY(-1px);
+}
+.btn-login:active {
+    transform: translateY(0);
+}
+#mensaje {
+    margin-top: 14px;
+    font-weight: 600;
+    font-size: 14px;
+    min-height: 22px;
+    transition: 0.3s;
+}
+.ok  { color: #2e7d4f; }
+.err { color: #d93025; }
+.admin-panel {
+    display: none;
+    margin-top: 28px;
+    text-align: left;
+    border-top: 2px solid #e8edf5;
+    padding-top: 20px;
+}
+.admin-panel h3 {
+    color: #1a4a2e;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.btn-admin {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 10px;
+    background: #2e7d4f;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 4px;
+}
+.btn-admin:hover { opacity: 0.88; }
+.btn-eliminar {
+    background: #d93025;
+    border: none;
+    color: white;
+    font-size: 12px;
+    border-radius: 6px;
+    padding: 3px 8px;
+    cursor: pointer;
+    float: right;
+    font-weight: 600;
+}
+.btn-eliminar:hover { opacity: 0.82; }
+.user-list {
+    margin-top: 10px;
+    background: #f2f6ff;
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.user-item {
+    background: white;
+    padding: 9px 12px;
+    margin-bottom: 7px;
+    border-radius: 8px;
+    font-size: 14px;
+    border-left: 3px solid #1a4a2e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.user-item:last-child { margin-bottom: 0; }
+.hint-admin {
+    margin-top: 18px;
+    font-size: 11px;
+    color: #aaa;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="login-box">
+
+    <div class="logo-header">
+        <canvas id="logo-canvas" width="50" height="50" title="Doble clic: panel admin"></canvas>
+        <h1>Comfenix</h1>
+    </div>
+
+    <p class="subtitulo">Sistema de Portería – Control de Acceso</p>
+
+    <div class="campo">
+        <label>Usuario</label>
+        <input type="text" id="usuario" placeholder="Ingrese su usuario" autocomplete="username">
+    </div>
+
+    <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" id="clave" placeholder="Ingrese su contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()">
+    </div>
+
+    <button class="btn-login" onclick="login()">Ingresar al Sistema</button>
+
+    <div id="mensaje"></div>
+
+    <div class="admin-panel" id="adminPanel">
+        <h3>Gestión de usuarios</h3>
+        <p style="font-size:13px;color:#555;line-height:1.5;margin-bottom:10px">
+            Por seguridad, los usuarios ya no se crean desde el navegador (así nadie puede
+            crear cuentas propias leyendo el código de la página). Para crear o eliminar un
+            usuario de portería, hazlo desde el panel de Supabase:
+        </p>
+        <ol style="font-size:13px;color:#555;line-height:1.6;padding-left:18px;margin-bottom:14px">
+            <li>Entra a <strong>Authentication → Users</strong> en Supabase.</li>
+            <li>Clic en <strong>Add user</strong>, marca <strong>Auto Confirm User</strong>.</li>
+            <li>Email: <code>usuario@sistema-porteria.local</code> (usa el nombre de usuario que quieras antes de la @).</li>
+            <li>En <strong>User Metadata</strong> agrega: <code>{"rol":"admin"}</code> o <code>{"rol":"portero"}</code>.</li>
+        </ol>
+        <button class="btn-admin" onclick="window.open('https://supabase.com/dashboard/project/fctpxpbksoqbefuzyrvn/auth/users','_blank')">Abrir panel de Supabase</button>
+    </div>
+
+    <p class="hint-admin">v2.0 · Portería Ampulan</p>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+// LOGO con recorte de fondo blanco
+(function(){
+    var img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function(){
+        var canvas = document.getElementById('logo-canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 50, 50);
+        var data = ctx.getImageData(0, 0, 50, 50);
+        var d = data.data;
+        for(var i = 0; i < d.length; i += 4){
+            var r = d[i], g = d[i+1], b = d[i+2];
+            if(r > 220 && g > 220 && b > 220){
+                d[i+3] = Math.round((255 - Math.max(r,g,b)) * 3);
+            }
+        }
+        ctx.putImageData(data, 0, 0);
+    };
+    img.onerror = function(){
+        var canvas = document.getElementById('logo-canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#1a4a2e';
+        ctx.beginPath(); ctx.arc(25,25,25,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = 'white'; ctx.font = 'bold 20px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('C', 25, 25);
+    };
+    img.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnFqLawT7r_FG7Uf57lBoM2JDUz6gLsQ98zg&s';
+    document.getElementById('logo-canvas').ondblclick = mostrarAdmin;
+})();
+
+// ---- Autenticación real con Supabase Auth ----
+var SUPABASE_BASE_URL='https://fctpxpbksoqbefuzyrvn.supabase.co';
+var SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjdHB4cGJrc29xYmVmdXp5cnZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0OTA4NzcsImV4cCI6MjEwNDA2Njg3N30.WBrp246pXyYDHIaT4beg61YPKFbByaD-1Uk2CXH6KEA';
+var EMAIL_DOMINIO = '@sistema-porteria.local'; // dominio ficticio: solo se usa para armar el email interno
+
+// Si el CDN no cargó (sin internet, red del colegio bloqueada, etc.)
+// avisamos en pantalla en vez de dejar el botón muerto sin explicación.
+var sbAuth = null;
+if (typeof supabase === 'undefined') {
+    document.addEventListener('DOMContentLoaded', function(){
+        mostrarMensaje('Sin conexión: no se pudo cargar el sistema. Revisa el internet.', 'err');
+        document.querySelector('.btn-login').disabled = true;
+    });
+} else {
+    sbAuth = supabase.createClient(SUPABASE_BASE_URL, SUPABASE_ANON_KEY);
+}
+
+function mostrarMensaje(texto, tipo){
+    var el = document.getElementById('mensaje');
+    el.textContent = texto;
+    el.className = tipo;
+}
+
+var enviando = false; // evita que un doble clic dispare dos peticiones
+
+async function login(){
+    if(enviando || !sbAuth) return;
+
+    var usuario = document.getElementById('usuario').value.trim().toLowerCase();
+    var clave   = document.getElementById('clave').value;
+    if(!usuario || !clave){ mostrarMensaje('Completa usuario y contraseña', 'err'); return; }
+
+    var boton = document.querySelector('.btn-login');
+    enviando = true;
+    boton.disabled = true;
+    boton.textContent = 'Verificando...';
+    mostrarMensaje('', '');
+
+    var email = usuario.includes('@') ? usuario : (usuario + EMAIL_DOMINIO);
+    var data = null, error = null;
+
+    try {
+        var res = await sbAuth.auth.signInWithPassword({ email: email, password: clave });
+        data  = res.data;
+        error = res.error;
+    } catch (e) {
+        error = e; // caída de red a mitad de la petición
+    }
+
+    function liberar(){
+        enviando = false;
+        boton.disabled = false;
+        boton.textContent = 'Ingresar al Sistema';
+    }
+
+    if(error || !data || !data.session){
+        // Distinguimos "credenciales malas" de "no hay internet":
+        // son dos problemas distintos y confundirlos hace perder tiempo.
+        var esRed = error && error.message &&
+                    /fetch|network|failed to fetch/i.test(error.message);
+        mostrarMensaje(esRed ? 'Error de conexión. Intenta de nuevo.'
+                             : 'Usuario o contraseña incorrectos', 'err');
+        document.getElementById('clave').value = '';
+        document.getElementById('clave').focus();
+        liberar();
+        return;
+    }
+
+    var rol = (data.user.user_metadata && data.user.user_metadata.rol) || 'portero';
+    mostrarMensaje('Bienvenido, ' + usuario + ' (' + rol + ')', 'ok');
+    setTimeout(function(){
+        window.location.href = 'porteria.html';
+    }, 600);
+}
+
+function mostrarAdmin(){
+    // Este panel solo muestra instrucciones, no da acceso a nada.
+    // La clave que había aquí era visible en el código fuente,
+    // así que daba una falsa sensación de seguridad. Se quitó.
+    var panel = document.getElementById('adminPanel');
+    panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
